@@ -7,8 +7,8 @@
 
 <body><h1> ข้อมูลจังหวัด ชินพัฒน์ ลิ่มดิลกธรรม(คิว) </h1>
 
-<form method="post" action="">
-	ชื่อจังหวัด <input type="text" name="rname" autofocus required><br>
+<form method="post" action=""enctype="multipart/from-data">
+	ชื่อจังหวัด <input type="text" name="pname" autofocus required><br>
     รูปภาพ<input type="file" name="pimage"><br>
     ชื่อภาค
     <select name="rid">
@@ -29,9 +29,14 @@
 <?php 
 if(isset($_POST['Submit'])){
 	include_once("connectdb.php");
-	$rname = $_POST['rname'];
-	$sql2 = "INSERT INTO `provinces` VALUES (NULL, '$rname')";
+	$pname = $_POST['pname'];
+    $ext = pathinfo($_FILES['my_file']['name'], PATHINFO_EXTENSION);
+    $rid = $_POST['rid'];
+
+	$sql2 = "INSERT INTO `provinces` VALUES (NULL, '{$pname}', '{$[$ext]}', '{$rif}' )";
 	mysqli_query($conn, $sql2) or die ("insert ไม่ได้");
+    $pic_id = mysqli_insert_id($conn);
+    copy($_FILES['pimage']['tmp_name'],"imgs/".$pic_id.".".$ext);
 }
 ?>
 
