@@ -74,7 +74,7 @@ if(isset($_POST['Submit'])){
         <td><?php echo $data['r_name']; ?></td>
 
         <td width="50" align="center">
-            <a href="delete_provinces.php?id=<?php echo $data['r_id']; ?>" onclick="return confirm('ยืนยันการลบ?');">
+            <a href="delete_provinces.php?id=<?php echo $data['p_id']; ?>" onclick="return confirm('ยืนยันการลบ?');">
             <img src="imgs/bin.png" width="50">
     </tr>
 <?php
