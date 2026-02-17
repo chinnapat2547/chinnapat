@@ -54,6 +54,7 @@ if(isset($_POST['Submit'])){
         <th>ชื่อจังหวัด</th>
         <th>รูปภาพ</th>
         <th>ภาค</th>
+        <th>ลบ</th>
     </tr>
 
 <?php
@@ -71,6 +72,10 @@ if(isset($_POST['Submit'])){
         <td><?php echo $data['p_name']; ?></td>
         <td><img src="imgs/<?php echo $data['p_id'];?><?php echo $data['p_ext'];?>" width="120"></td>
         <td><?php echo $data['r_name']; ?></td>
+
+        <td width="50" align="center">
+            <a href="delete_provinces.php?id=<?php echo $data['r_id']; ?>" onclick="return confirm('ยืนยันการลบ?');">
+            <img src="imgs/bin.png" width="50">
     </tr>
 <?php
     } 
