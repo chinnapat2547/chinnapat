@@ -7,8 +7,8 @@
 
 <body><h1> ข้อมูลจังหวัด ชินพัฒน์ ลิ่มดิลกธรรม(คิว) </h1>
 
-<form method="post" action=""enctype="multipart/from-data">
-	ชื่อจังหวัด <input type="text" name="pname" autofocus required><br>
+<form method="post" action="" enctype="multipart/form-data">
+    ชื่อจังหวัด <input type="text" name="pname" autofocus required><br>
     รูปภาพ<input type="file" name="pimage"><br>
     ชื่อภาค
     <select name="rid">
@@ -21,22 +21,30 @@
     <option value="<?php echo $data3['r_id'];?>"><?php echo $data3['r_name'];?></option>
 <?php } ?>
     </select><br><br>
-	<button type="submit" name="Submit">บันทึก</button>
+    <button type="submit" name="Submit">บันทึก</button>
 </form>
 <br>
 <br>
 
 <?php 
 if(isset($_POST['Submit'])){
-	include_once("connectdb.php");
-	$pname = $_POST['pname'];
-    $ext = pathinfo($_FILES['my_file']['name'], PATHINFO_EXTENSION);
+    include_once("connectdb.php");
+    $pname = $_POST['pname'];
     $rid = $_POST['rid'];
-
-	$sql2 = "INSERT INTO `provinces` VALUES (NULL, '{$pname}', '{$[$ext]}', '{$rif}' )";
-	mysqli_query($conn, $sql2) or die ("insert ไม่ได้");
+    
+    // แก้ไข 2: เปลี่ยน my_file เป็น pimage ให้ตรงกับ form
+    $ext = pathinfo($_FILES['pimage']['name'], PATHINFO_EXTENSION);
+    
+    // แก้ไข 3: ลบวงเล็บก้ามปูที่เกินมา และแก้ $rif เป็น $rid
+    // หมายเหตุ: ตรงนี้ต้องดูว่าในฐานข้อมูล column ที่ 3 เก็บแค่นามสกุลไฟล์ หรือชื่อไฟล์เต็มๆ
+    // ถ้าเก็บแค่นามสกุลไฟล์ (เช่น .jpg) ให้ใช้โค้ดด้านล่างนี้:
+    $sql2 = "INSERT INTO `provinces` VALUES (NULL, '{$pname}', '.{$ext}', '{$rid}' )";
+    
+    mysqli_query($conn, $sql2) or die ("insert ไม่ได้: " . mysqli_error($conn));
     $pic_id = mysqli_insert_id($conn);
-    copy($_FILES['pimage']['tmp_name'],"imgs/".$pic_id.".".$ext);
+    
+    // แก้ไข 4: อัปโหลดไฟล์
+    copy($_FILES['pimage']['tmp_name'], "imgs/".$pic_id.".".$ext);
 }
 ?>
 

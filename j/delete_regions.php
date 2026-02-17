@@ -1,10 +1,13 @@
 <?php 
-	include_once("connectdb.php");
+    include_once("connectdb.php");
+    
     $id = $_GET['id'];
-	$sql = "DELETE FROM `regions` WHERE r_id='{$_GET['id']}'";
-	mysqli_query($conn, $sql); or die ("ลบไม่ได้");
+    
+    $sql = "DELETE FROM `regions` WHERE r_id = '$id' ";
+    
+    mysqli_query($conn, $sql) or die ("ลบไม่ได้: " . mysqli_error($conn));
 
     echo "<script>";
-    echo "window.location='a.php'";
+    echo "window.location='a.php';";
     echo "</script>";
 ?>

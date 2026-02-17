@@ -8,21 +8,24 @@
 <body><h1> ข้อมูลภาค ชินพัฒน์ ลิ่มดิลกธรรม(คิว) </h1> 
 
 <form method="post" action="">
-	ชื่อภาค <input type="text" name="rname" autofocus required>
-	<button type="submit" name="Submit">บันทึก</button>
+    ชื่อภาค <input type="text" name="rname" autofocus required>
+    <button type="submit" name="Submit">บันทึก</button>
 </form>
 <br>
 <br>
 
 <?php 
 if(isset($_POST['Submit'])){
-	include_once("connectdb.php");
-	$rname = $_POST['rname'];
-	$sql2 = "INSERT INTO `regions` VALUES (NULL, '$rname')";
-	mysqli_query($conn, $sql2) or die ("insert ไม่ได้");
+    include_once("connectdb.php");
+    $rname = $_POST['rname'];
+    
+    // ตรวจสอบหน่อยว่ามีข้อมูลส่งมาจริงไหม
+    if(!empty($rname)){
+        $sql2 = "INSERT INTO `regions` VALUES (NULL, '$rname')";
+        mysqli_query($conn, $sql2) or die ("insert ไม่ได้: " . mysqli_error($conn));
+    }
 }
 ?>
-
 
 <table border="1">
     <tr>
@@ -41,7 +44,13 @@ if(isset($_POST['Submit'])){
     <tr>
         <td><?php echo $data['r_id']; ?></td>
         <td><?php echo $data['r_name']; ?></td>
-        <td width="50" align="center"><a href="delete_region.php?id="<?php echo $data['r_id'];?>" onClick="return comfirm(ยืนยีนการลบ),"><img src="imgs/bin.jpg width="20"></a></td>
+        
+        <td width="50" align="center">
+            <a href="delete_region.php?id=<?php echo $data['r_id']; ?>" onclick="return confirm('ยืนยันการลบ?');">
+                <img src="imgs/bin.png" width="20">
+            </a>
+        </td>
+        
     </tr>
 <?php
     } 
